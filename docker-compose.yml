@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mongodb-weld:
+    container_name: mongodb-weld
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  kafka-ui-weld:
+    container_name: kafka-ui-weld
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - '8080:8080'
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka-weld:9092'
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  kafka-weld:
+    container_name: kafka-weld
+    image: 'bitnami/kafka:3.4.0'
+    ports:
+      - '9094:9094'
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ADVERTISED_HOST_NAME=127.0.0.1
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:9094,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-weld:9092,EXTERNAL://localhost:9094
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_KRAFT_CLUSTER_ID=fxGG_7-aTuenueYLh0B-hA
+      - BITNAMI_DEBUG=true
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
