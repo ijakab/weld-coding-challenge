@@ -12,6 +12,7 @@ async function bootstrap() {
       // Setup communication protocol here
     },
   );
-  app.listen();
+  app.listen().catch(console.error);
 }
-bootstrap();
+
+bootstrap().catch(console.error);
