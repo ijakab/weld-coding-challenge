@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "setup": "docker-compose up -d && yarn setup:kafka",
-    "setup:kafka": "docker exec kafka-weld kafka-topics.sh --bootstrap-server localhost:9092 --topic todo.upsert --create --partitions 1 --replication-factor 1 && docker exec kafka-weld kafka-topics.sh --bootstrap-server localhost:9092 --topic todo.sync.reply --create --partitions 1 --replication-factor 1",
+    "setup:kafka": "docker exec kafka-weld kafka-topics.sh --bootstrap-server localhost:9092 --topic todo.upsert --create --partitions 1 --replication-factor 1 && docker exec kafka-weld kafka-topics.sh --bootstrap-server localhost:9092 --topic todo.sync --create --partitions 1 --replication-factor 1",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
