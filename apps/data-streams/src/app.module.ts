@@ -15,9 +15,6 @@ import { environment } from './environment';
             clientId: environment.KAFKA_CLIENT_ID,
             brokers: environment.KAFKA_BROKERS.split(','),
           },
-          consumer: {
-            groupId: environment.KAFKA_CONSUMER_GROUP_ID,
-          },
         },
       },
     ]),

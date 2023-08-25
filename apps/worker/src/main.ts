@@ -16,8 +16,9 @@ async function bootstrap() {
         consumer: {
           groupId: environment.KAFKA_CONSUMER_GROUP_ID,
         },
-        producer: {
-          allowAutoTopicCreation: true,
+        subscribe: {
+          // we want to ensure messages are read eventually even if service is down temporary
+          fromBeginning: true,
         },
       },
     },

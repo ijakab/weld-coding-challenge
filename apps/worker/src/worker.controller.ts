@@ -1,9 +1,9 @@
-import { Controller, Logger } from '@nestjs/common';
-import { WorkerService } from './worker.service';
+import { Controller, Inject, Logger } from '@nestjs/common';
 import {
+  ClientKafka,
   Ctx,
+  EventPattern,
   KafkaContext,
-  MessagePattern,
   Payload,
 } from '@nestjs/microservices';
 
@@ -11,15 +11,20 @@ import {
 export class WorkerController {
   private readonly logger = new Logger(WorkerController.name);
 
-  constructor(private readonly workerService: WorkerService) {}
+  constructor(@Inject('KAFKA_CLIENT') private client: ClientKafka) {}
 
-  @MessagePattern('kafka.test')
-  public getHello(
+  async onApplicationBootstrap() {
+    await this.client.connect();
+  }
+
+  @EventPattern('todo.upsert')
+  public todoUpsert(
     @Payload() message: string,
     @Ctx() context: KafkaContext,
   ): void {
-    this.logger.log('I am called');
+    this.logger.log('Upsert is called');
     this.logger.log(message);
     this.logger.log(context.getTopic());
+    this.client.emit('todo.sync', { sync: true });
   }
 }
