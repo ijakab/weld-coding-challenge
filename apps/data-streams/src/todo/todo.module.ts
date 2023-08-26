@@ -5,6 +5,7 @@ import { TodoDispatcher } from './domain/todo.dispatcher';
 import { TodoSyncController } from './api/todo-sync.controller';
 import { TodoConfig } from './todo-config';
 import { TodoHttpController } from './api/todo-http.controller';
+import { TodoGraphqlResolver } from '../../../worker/src/todoist/api/todo-graphql.resolver';
 
 @Module({
   imports: [
@@ -22,6 +23,6 @@ import { TodoHttpController } from './api/todo-http.controller';
     ]),
   ],
   controllers: [TodoSyncController, TodoHttpController],
-  providers: [TodoDispatcher],
+  providers: [TodoDispatcher, TodoGraphqlResolver],
 })
 export class TodoModule {}
