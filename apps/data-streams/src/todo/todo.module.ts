@@ -4,8 +4,9 @@ import { environment } from '../environment';
 import { TodoDispatcher } from './domain/todo.dispatcher';
 import { TodoSyncController } from './api/todo-sync.controller';
 import { TodoConfig } from './todo-config';
-import { TodoHttpController } from './api/todo-http.controller';
-import { TodoGraphqlResolver } from '../../../worker/src/todoist/api/todo-graphql.resolver';
+import { TodoControlService } from './domain/todo-control.service';
+import { TodoGraphqlResolver } from './api/todo-graphql.resolver';
+import { TodoKafkaSerializer } from './domain/serialization/todo.kafka-serializer';
 
 @Module({
   imports: [
@@ -22,7 +23,12 @@ import { TodoGraphqlResolver } from '../../../worker/src/todoist/api/todo-graphq
       },
     ]),
   ],
-  controllers: [TodoSyncController, TodoHttpController],
-  providers: [TodoDispatcher, TodoGraphqlResolver],
+  controllers: [TodoSyncController],
+  providers: [
+    TodoDispatcher,
+    TodoGraphqlResolver,
+    TodoControlService,
+    TodoKafkaSerializer,
+  ],
 })
 export class TodoModule {}

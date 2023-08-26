@@ -1,6 +1,6 @@
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { NestFactory } from '@nestjs/core';
-import { WorkerModule } from './worker.module';
+import { WorkerModule } from './common/worker.module';
 import { environment } from './environment';
 
 async function bootstrap() {
