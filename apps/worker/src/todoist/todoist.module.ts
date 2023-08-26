@@ -8,6 +8,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TodoistSchedulerService } from './api/todoist-scheduler.service';
 import { TodoistDispatcher } from './domain/todoist.dispatcher';
+import { TodoistSyncService } from './domain/todoist-sync.service';
 
 @Module({
   imports: [
@@ -30,6 +31,11 @@ import { TodoistDispatcher } from './domain/todoist.dispatcher';
     ScheduleModule.forRoot(),
   ],
   controllers: [TodoUpsertController],
-  providers: [TodoistSchedulerService, TodoistDispatcher, TodoistClient],
+  providers: [
+    TodoistSchedulerService,
+    TodoistDispatcher,
+    TodoistClient,
+    TodoistSyncService,
+  ],
 })
 export class TodoistModule {}

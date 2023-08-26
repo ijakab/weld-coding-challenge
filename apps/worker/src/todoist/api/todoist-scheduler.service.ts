@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { environment } from '../../environment';
+import { TodoistSyncService } from '../domain/todoist-sync.service';
 
 /* ************
 
@@ -20,8 +21,11 @@ But that would not be the way to go in real world high load scenario
 export class TodoistSchedulerService {
   private readonly logger = new Logger(TodoistSchedulerService.name);
 
+  constructor(private readonly todoistSyncService: TodoistSyncService) {}
+
   @Cron(environment.TODOIST_SYNC_INTERVAL)
-  syncTodoist() {
-    this.logger.log('Todoist sync called');
+  async syncTodoist() {
+    this.logger.log('Todoist sync crom triggered');
+    await this.todoistSyncService.handleTodoistSync();
   }
 }
