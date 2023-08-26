@@ -9,9 +9,11 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TodoistSchedulerService } from './api/todoist-scheduler.service';
 import { TodoistDispatcher } from './domain/todoist.dispatcher';
 import { TodoistSyncService } from './domain/todoist-sync.service';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
+    CommonModule,
     ClientsModule.register([
       {
         name: TodoistConfig.KafkaDIName,

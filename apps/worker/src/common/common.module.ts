@@ -8,5 +8,6 @@ import { RedisService } from './data/redis.service';
   imports: [TodoistModule],
   controllers: [TodoControlController],
   providers: [RedisService, TodoControlService],
+  exports: [RedisService],
 })
-export class WorkerModule {}
+export class CommonModule {}

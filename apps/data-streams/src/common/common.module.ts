@@ -14,4 +14,4 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class CommonModule {}

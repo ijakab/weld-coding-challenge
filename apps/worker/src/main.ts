@@ -1,11 +1,11 @@
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { NestFactory } from '@nestjs/core';
-import { WorkerModule } from './common/worker.module';
+import { CommonModule } from './common/common.module';
 import { environment } from './environment';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    WorkerModule,
+    CommonModule,
     {
       transport: Transport.KAFKA,
       options: {

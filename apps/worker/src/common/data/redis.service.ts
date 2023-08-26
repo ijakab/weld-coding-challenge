@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import Redis from 'ioredis';
 import { environment } from '../../environment';
-import { WorkerConfig } from '../worker.config';
+import { CommonConfig } from '../common.config';
 
 @Injectable()
 export class RedisService implements OnApplicationBootstrap {
@@ -10,7 +10,7 @@ export class RedisService implements OnApplicationBootstrap {
   public onApplicationBootstrap(): void {
     this.redisClient = new Redis({
       host: environment.REDIS_HOST,
-      connectTimeout: WorkerConfig.RedisConnectionTimeout,
+      connectTimeout: CommonConfig.RedisConnectionTimeout,
     });
   }
 

@@ -1,4 +1,4 @@
-import { AppModule } from './common/app.module';
+import { CommonModule } from './common/common.module';
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -10,7 +10,7 @@ const initMicroservice = async (app: INestApplication) => {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(CommonModule);
   await initMicroservice(app);
   await app.listen(3000);
 }

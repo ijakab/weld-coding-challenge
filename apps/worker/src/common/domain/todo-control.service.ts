@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TodoControlDto } from '../../todoist/api/dto/todo-control.dto';
 import { RedisService } from '../data/redis.service';
-import { WorkerConfig } from '../worker.config';
+import { CommonConfig } from '../common.config';
 
 @Injectable()
 export class TodoControlService {
@@ -15,14 +15,14 @@ export class TodoControlService {
     // Couple of improvements possible here for a real world: add serializers/deserializers for redis, validating incoming dto
     // But for this simple case I opted out of this to save some time
     await this.redisService.set(
-      WorkerConfig.TodoControlFetchKey,
+      CommonConfig.TodoControlFetchKey,
       control.fetch.toString(),
     );
   }
 
   public async retrieveFetchControlState(): Promise<boolean> {
     const existingControl = await this.redisService.get(
-      WorkerConfig.TodoControlFetchKey,
+      CommonConfig.TodoControlFetchKey,
     );
     if (!existingControl) return false;
     // we could also handle what if value is not one of the expected 'true' or 'false'
