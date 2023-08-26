@@ -14,6 +14,8 @@ import {
   TodoIntegrationSchema,
 } from './data/todo-integration.schema';
 import { TodoSyncService } from './domain/todo-sync.service';
+import { TodoQueryService } from './domain/todo-query.service';
+import { TodoSerializer } from './domain/serialization/todo.serializer';
 
 @Module({
   imports: [
@@ -39,8 +41,10 @@ import { TodoSyncService } from './domain/todo-sync.service';
     TodoDispatcher,
     TodoGraphqlResolver,
     TodoControlService,
+    TodoSerializer,
     TodoKafkaSerializer,
     TodoSyncService,
+    TodoQueryService,
   ],
 })
 export class TodoModule {}
