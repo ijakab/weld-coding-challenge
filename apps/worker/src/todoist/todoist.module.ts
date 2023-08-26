@@ -10,6 +10,7 @@ import { TodoistSchedulerService } from './api/todoist-scheduler.service';
 import { TodoistDispatcher } from './domain/todoist.dispatcher';
 import { TodoistSyncService } from './domain/todoist-sync.service';
 import { CommonModule } from '../common/common.module';
+import { TodoistKafkaSerializer } from './domain/todoist.kafka-serializer';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CommonModule } from '../common/common.module';
     TodoistDispatcher,
     TodoistClient,
     TodoistSyncService,
+    TodoistKafkaSerializer,
   ],
 })
 export class TodoistModule {}

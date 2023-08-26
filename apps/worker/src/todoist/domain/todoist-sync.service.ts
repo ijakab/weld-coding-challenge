@@ -14,9 +14,14 @@ export class TodoistSyncService {
 
   public async handleTodoistSync(): Promise<void> {
     const syncToken = await this.retrieveSyncToken();
-    const todoistItems = await this.todoistClient.findChanges(syncToken);
-    await this.storeSyncToken(todoistItems.sync_token);
-    console.log(todoistItems);
+    // In a real world we could also have a pagination depending on API, and create stream/observable
+    // Todoist sync API does not support pagination
+    const todoistResponse = await this.todoistClient.findChanges(syncToken);
+    await this.storeSyncToken(todoistResponse.sync_token);
+
+    if (todoistResponse.items.length) {
+      await this.todoistDispatcher.dispatchTodoistChange(todoistResponse.items);
+    }
   }
 
   private async retrieveSyncToken(): Promise<string> {
