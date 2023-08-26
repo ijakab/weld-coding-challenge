@@ -2,6 +2,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TodoControlService } from '../domain/todo-control.service';
 import { TodoType } from './dto/todo.type';
 import { TodoQueryService } from '../domain/todo-query.service';
+import { PaginationInput } from '../../common/api/pagination.input';
+import { PaginatedTodoType } from './dto/paginated-todo.type';
 
 @Resolver()
 export class TodoGraphqlResolver {
@@ -10,9 +12,12 @@ export class TodoGraphqlResolver {
     private readonly todoQueryService: TodoQueryService,
   ) {}
 
-  @Query(() => Boolean)
-  public async queryTodos(): Promise<boolean> {
-    return true;
+  @Query(() => PaginatedTodoType)
+  public async queryTodos(
+    @Args({ name: 'pagination', type: () => PaginationInput })
+    pagination: PaginationInput,
+  ): Promise<PaginatedTodoType> {
+    return this.todoQueryService.queryTodos(pagination);
   }
 
   @Query(() => TodoType)

@@ -1,3 +1,5 @@
+import { ModulePaginationType } from '../api/pagination.type';
+
 export abstract class BaseSerializer<RawType, SerializedType> {
   protected abstract serialize(item: RawType): SerializedType;
 
@@ -11,5 +13,14 @@ export abstract class BaseSerializer<RawType, SerializedType> {
     return items.map((item) => {
       return this.serialize(item);
     });
+  }
+
+  public pagination(
+    rawPaginated: ModulePaginationType<RawType>,
+  ): ModulePaginationType<SerializedType> {
+    return {
+      pagination: rawPaginated.pagination,
+      records: this.list(rawPaginated.records),
+    };
   }
 }
