@@ -5,6 +5,8 @@ import { Todo, TodoDocument } from '../data/todo.schema';
 import { TodoIntegration } from '../data/todo-integration.schema';
 import { InjectModel } from '@nestjs/mongoose';
 
+// My IDE reports some errors here, but they are not type errors and typescript does not detect anything
+// I am assuming that it reads some mongoose typing incorrectly, hopefully it will not be problem for others
 @Injectable()
 export class TodoSyncService {
   constructor(
@@ -14,16 +16,14 @@ export class TodoSyncService {
   ) {}
 
   public async syncExternalTodo(externalTodo: ExternalTodoDto): Promise<void> {
-    const existingIntegration = await this.todoIntegrationModel
-      .findOne({
-        integration: externalTodo.integration,
-        externalId: externalTodo.externalId,
-      })
-      .populate('todo');
-    console.log(existingIntegration);
+    const existingIntegration = await this.todoIntegrationModel.findOne({
+      integration: externalTodo.integration,
+      externalId: externalTodo.externalId,
+    });
 
     if (existingIntegration) {
-      await this.updateExisting(existingIntegration.todo, externalTodo);
+      const todo = await this.todoModel.findById(existingIntegration.todo);
+      await this.updateExisting(todo, externalTodo);
     } else {
       await this.createTodoWithIntegration(externalTodo);
     }
