@@ -8,4 +8,7 @@ export const environment = cleanEnv(process.env, {
   KAFKA_TODO_UPSERT_TOPIC: str({ default: 'todo.upsert' }),
   KAFKA_TODO_CONTROL_TOPIC: str({ default: 'todo.control' }),
   REDIS_HOST: str({ default: 'localhost' }),
+  TODOIST_BEARER_TOKEN: str({
+    default: '7dc8262798c3321711e5c29ef5cf38f39e7a259b',
+  }),
 });

@@ -4,6 +4,8 @@ import { environment } from '../environment';
 import { TodoistConfig } from './todoist-config';
 import { TodoUpsertController } from './api/todo-upsert.controller';
 import { TodoistDispatcher } from './domain/todoist.dispatcher';
+import { TodoistClient } from './data/todoist.client';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -19,8 +21,12 @@ import { TodoistDispatcher } from './domain/todoist.dispatcher';
         },
       },
     ]),
+    HttpModule.register({
+      timeout: TodoistConfig.HttpTimeout,
+      maxRedirects: TodoistConfig.HttpMaxRedirects,
+    }),
   ],
   controllers: [TodoUpsertController],
-  providers: [TodoistDispatcher],
+  providers: [TodoistDispatcher, TodoistClient],
 })
 export class TodoistModule {}
