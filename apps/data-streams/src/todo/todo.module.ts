@@ -7,9 +7,20 @@ import { TodoConfig } from './todo-config';
 import { TodoControlService } from './domain/todo-control.service';
 import { TodoGraphqlResolver } from './api/todo-graphql.resolver';
 import { TodoKafkaSerializer } from './domain/serialization/todo.kafka-serializer';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Todo, TodoSchema } from './data/todo.schema';
+import {
+  TodoIntegration,
+  TodoIntegrationSchema,
+} from './data/todo-integration.schema';
+import { TodoSyncService } from './domain/todo-sync.service';
 
 @Module({
   imports: [
+    MongooseModule.forFeature([
+      { name: Todo.name, schema: TodoSchema },
+      { name: TodoIntegration.name, schema: TodoIntegrationSchema },
+    ]),
     ClientsModule.register([
       {
         name: TodoConfig.KafkaDIName,
@@ -29,6 +40,7 @@ import { TodoKafkaSerializer } from './domain/serialization/todo.kafka-serialize
     TodoGraphqlResolver,
     TodoControlService,
     TodoKafkaSerializer,
+    TodoSyncService,
   ],
 })
 export class TodoModule {}

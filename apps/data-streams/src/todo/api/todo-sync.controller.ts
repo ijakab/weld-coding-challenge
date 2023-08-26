@@ -7,12 +7,17 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { TodoConfig } from '../todo-config';
 import { environment } from '../../environment';
+import { TodoSyncService } from '../domain/todo-sync.service';
+import { ExternalTodoDto } from './dto/external-todo.dto';
 
 @Controller()
 export class TodoSyncController implements OnApplicationBootstrap {
   private readonly logger = new Logger(TodoSyncController.name);
 
-  constructor(@Inject(TodoConfig.KafkaDIName) private client: ClientKafka) {}
+  constructor(
+    @Inject(TodoConfig.KafkaDIName) private client: ClientKafka,
+    private todoSyncService: TodoSyncService,
+  ) {}
 
   public async onApplicationBootstrap(): Promise<void> {
     // Through nest kafka ecosystem, I was not able to receive an event back from the microservice
@@ -29,13 +34,15 @@ export class TodoSyncController implements OnApplicationBootstrap {
       fromBeginning: true,
     });
     await consumer.run({
-      eachMessage: async ({}) => {
-        this.syncTodo();
+      eachMessage: async ({ message }) => {
+        // this JSON parsing is pretty much what I assume nest's @Payload would do so wanted to emulate its
+        await this.syncTodo(JSON.parse(message.value.toString()));
       },
     });
   }
 
-  public syncTodo(): void {
-    this.logger.log('Sync is called');
+  public async syncTodo(externalTodo: ExternalTodoDto): Promise<void> {
+    this.logger.log('Called todo sync request');
+    await this.todoSyncService.syncExternalTodo(externalTodo);
   }
 }
