@@ -11,4 +11,7 @@ export const environment = cleanEnv(process.env, {
   TODOIST_BEARER_TOKEN: str({
     default: '7dc8262798c3321711e5c29ef5cf38f39e7a259b',
   }),
+  // the task does specify interval to be every 5 minutes, but that value is not suited for testing and debugging
+  // therefor I made it env variable, by default every 10 second, and can be changed in production env
+  TODOIST_SYNC_INTERVAL: str({ default: '*/10 * * * * *' }),
 });

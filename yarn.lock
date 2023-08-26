@@ -1563,6 +1563,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/schedule@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@nestjs/schedule@npm:3.0.3"
+  dependencies:
+    cron: 2.4.1
+    uuid: 9.0.0
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
+    reflect-metadata: ^0.1.12
+  checksum: 21d4a853d893a514dbbc76b278e10908f6376fef1d37beb8213ed6a15bc3f66d0f0f3150cd98634ded39c1d7103223c346915f776349b40d1adc57bab6d6bbbf
+  languageName: node
+  linkType: hard
+
 "@nestjs/schematics@npm:10.0.2, @nestjs/schematics@npm:^10.0.1":
   version: 10.0.2
   resolution: "@nestjs/schematics@npm:10.0.2"
@@ -3509,6 +3523,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cron@npm:2.4.1":
+  version: 2.4.1
+  resolution: "cron@npm:2.4.1"
+  dependencies:
+    luxon: ^3.2.1
+  checksum: a421a837f99cf18da2f51e3608610f71817c38e6f756b4c85a26f64521dac327ac79861ae3dcf991076f72f3be0daadfffd413b4be0c3b4b029509b89e86b6d4
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -3540,6 +3563,7 @@ __metadata:
     "@nestjs/graphql": ^12.0.8
     "@nestjs/microservices": 10.2.0
     "@nestjs/platform-express": 10.2.0
+    "@nestjs/schedule": ^3.0.3
     "@nestjs/schematics": 10.0.2
     "@nestjs/testing": 10.2.0
     "@types/express": 4.17.17
@@ -6048,6 +6072,13 @@ __metadata:
   version: 10.0.1
   resolution: "lru-cache@npm:10.0.1"
   checksum: 06f8d0e1ceabd76bb6f644a26dbb0b4c471b79c7b514c13c6856113879b3bf369eb7b497dad4ff2b7e2636db202412394865b33c332100876d838ad1372f0181
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.2.1":
+  version: 3.4.1
+  resolution: "luxon@npm:3.4.1"
+  checksum: cd5e2a407cdc55a10548f6e0c1ca83590574fa3cba4d03da37113cd7dc118e6ce46b2d71ddc32cfd35a0413c15ac9a3cfdef3a2702e6862814b691048ffe0be8
   languageName: node
   linkType: hard
 

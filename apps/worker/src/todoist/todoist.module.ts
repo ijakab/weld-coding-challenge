@@ -3,9 +3,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { environment } from '../environment';
 import { TodoistConfig } from './todoist-config';
 import { TodoUpsertController } from './api/todo-upsert.controller';
-import { TodoistDispatcher } from './domain/todoist.dispatcher';
 import { TodoistClient } from './data/todoist.client';
 import { HttpModule } from '@nestjs/axios';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TodoistSchedulerService } from './api/todoist-scheduler.service';
+import { TodoistDispatcher } from './domain/todoist.dispatcher';
 
 @Module({
   imports: [
@@ -25,8 +27,9 @@ import { HttpModule } from '@nestjs/axios';
       timeout: TodoistConfig.HttpTimeout,
       maxRedirects: TodoistConfig.HttpMaxRedirects,
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [TodoUpsertController],
-  providers: [TodoistDispatcher, TodoistClient],
+  providers: [TodoistSchedulerService, TodoistDispatcher, TodoistClient],
 })
 export class TodoistModule {}
