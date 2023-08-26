@@ -7,6 +7,6 @@ import { RedisService } from './data/redis.service';
   imports: [],
   controllers: [TodoControlController],
   providers: [RedisService, TodoControlService],
-  exports: [RedisService],
+  exports: [RedisService, TodoControlService],
 })
 export class CommonModule {}

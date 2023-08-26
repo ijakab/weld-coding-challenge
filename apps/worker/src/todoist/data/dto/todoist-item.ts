@@ -3,4 +3,5 @@ export type TodoistItem = {
   content: string;
   description: string | null;
   completed_at: string | null;
+  user_id: string;
 };

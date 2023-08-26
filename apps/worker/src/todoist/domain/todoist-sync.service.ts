@@ -1,24 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { TodoistDispatcher } from './todoist.dispatcher';
 import { TodoistClient } from '../data/todoist.client';
 import { RedisService } from '../../common/data/redis.service';
 import { TodoistConfig } from '../todoist-config';
+import { TodoControlService } from '../../common/domain/todo-control.service';
 
 @Injectable()
 export class TodoistSyncService {
+  private readonly logger = new Logger(TodoistSyncService.name);
+
   constructor(
     private readonly todoistDispatcher: TodoistDispatcher,
     private readonly todoistClient: TodoistClient,
     private readonly redisService: RedisService,
+    private readonly todoControlService: TodoControlService,
   ) {}
 
   public async handleTodoistSync(): Promise<void> {
+    const syncEnabled =
+      await this.todoControlService.retrieveFetchControlState();
+    if (!syncEnabled) return;
+
     const syncToken = await this.retrieveSyncToken();
     // In a real world we could also have a pagination depending on API, and create stream/observable
     // Todoist sync API does not support pagination
     const todoistResponse = await this.todoistClient.findChanges(syncToken);
     await this.storeSyncToken(todoistResponse.sync_token);
 
+    this.logger.log(`Found ${todoistResponse.items.length} items to sync`);
     if (todoistResponse.items.length) {
       await this.todoistDispatcher.dispatchTodoistChange(todoistResponse.items);
     }
