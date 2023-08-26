@@ -17,7 +17,19 @@ export class TodoistDispatcher implements OnApplicationBootstrap {
   }
 
   public async dispatchTodoistChange(items: TodoistItem[]): Promise<void> {
-    const serialized = this.todoistKafkaSerializer.serializeTodoistItems(items);
-    this.client.emit(environment.KAFKA_TODO_SYNC_TOPIC, serialized);
+    // while implementing this method I was in a dilemma weather it is better to batch all the items in a single message or to have one message for one item
+    // batching may be more performant, but I have a couple of reasons for going with this approach in this case
+    // first, kafka statistics, such as consumer lag, would give us a better insight into how much work our service is behind if every message is equal
+    // second, there would be a real doubt weather to commit offset for a message if processing failed for some items and succeeded for others
+    // lastly, I wanted to have item.id as a message key, as it is important to consume messages for a single item in order
+    // whereas across items messages can be consumed out of order to gain some performance
+
+    for (const item of items) {
+      const serialized = this.todoistKafkaSerializer.serializeTodoistItem(item);
+      this.client.emit(environment.KAFKA_TODO_SYNC_TOPIC, {
+        key: item.id,
+        value: serialized,
+      });
+    }
   }
 }
