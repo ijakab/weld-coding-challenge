@@ -7,6 +7,7 @@ import { TodoSerializer } from './serialization/todo.serializer';
 import { PaginationInput } from '../../common/api/pagination.input';
 import { AppConfig } from '../../common/app-config';
 import { PaginatedTodoType } from '../api/dto/paginated-todo.type';
+import { TodoFilterInput } from '../api/dto/todo-filter.input';
 
 @Injectable()
 export class TodoQueryService {
@@ -17,8 +18,10 @@ export class TodoQueryService {
 
   public async queryTodos(
     paginationInput: PaginationInput,
+    filterInput?: TodoFilterInput | null,
   ): Promise<PaginatedTodoType> {
     const queryBuilder = this.todoModel.find();
+    if (filterInput) this.setFiltersScope(queryBuilder, filterInput);
     const total = await queryBuilder.clone().countDocuments().exec();
 
     this.setPaginationScope(queryBuilder, paginationInput);
@@ -30,6 +33,24 @@ export class TodoQueryService {
   public async getSingle(id: string): Promise<TodoType> {
     const todo = await this.todoModel.findById(id);
     return this.todoSerializer.single(todo);
+  }
+
+  // In a real world, we'd make some more dynamic filtering as the logic would be reused across modules
+  private setFiltersScope(
+    query: TodoQueryBuilder,
+    filterInput: TodoFilterInput,
+  ): void {
+    if (typeof filterInput.isCompleted === 'boolean') {
+      query.where({ isCompleted: filterInput.isCompleted });
+    }
+    if (filterInput.content) {
+      query.where({
+        content: {
+          $regex: new RegExp(filterInput.content),
+          $options: 'i',
+        },
+      });
+    }
   }
 
   // for better performance on large datasets we use cursor based pagination
