@@ -39,3 +39,9 @@ services:
       - BITNAMI_DEBUG=true
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
       - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+
+  redis-weld:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
