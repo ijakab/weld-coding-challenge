@@ -11,6 +11,9 @@ export class Todo {
 
   @Prop({ required: true })
   isCompleted: boolean;
+
+  @Prop({ required: true })
+  syncAt: number;
 }
 
 export type TodoDocument = HydratedDocument<Todo>;

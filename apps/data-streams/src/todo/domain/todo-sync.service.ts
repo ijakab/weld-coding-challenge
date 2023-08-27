@@ -34,15 +34,14 @@ export class TodoSyncService {
     incoming: ExternalTodoDto,
   ): Promise<void> {
     if (!this.hasChanges(existing, incoming)) return;
-    // Here, I would also like to do something like
-    // if (existingIntegration.todo.updatedAt > externalTodo.updatedAt) return
-    // So that we make sure we do not update if we already have the newer record, or otherwise set some policy for situations like those
-    // Because we could get data out of order if integrating with multiple APIs.
-    // However, todoist does not provide information about last update so I did not go with that approach
+    // data can come out of order, especially if we have multiple integrations and in case of retries
+    // we want to make sure we do not override if we have newer version
+    if (existing.syncAt && existing.syncAt > incoming.meta.syncAt) return;
 
     existing.content = incoming.content;
     existing.description = incoming.description;
     existing.isCompleted = incoming.isCompleted;
+    existing.syncAt = incoming.meta.syncAt;
     await existing.save();
   }
 
@@ -65,6 +64,7 @@ export class TodoSyncService {
       content: incoming.content,
       description: incoming.description,
       isCompleted: incoming.isCompleted,
+      syncAt: incoming.meta.syncAt,
     });
     await this.todoIntegrationModel.create({
       integration: incoming.integration,

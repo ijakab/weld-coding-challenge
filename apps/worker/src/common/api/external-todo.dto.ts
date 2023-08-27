@@ -9,5 +9,6 @@ export type ExternalTodoDto = {
   meta: {
     retry: number;
     error?: string;
+    syncAt: number;
   };
 };

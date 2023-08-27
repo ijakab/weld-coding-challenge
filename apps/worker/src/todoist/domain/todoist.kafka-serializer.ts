@@ -19,6 +19,7 @@ export class TodoistKafkaSerializer {
       externalId: todoistItem.id,
       meta: {
         retry: 0,
+        syncAt: Date.now(), // it would be better if we had a data from todoist api of actual change, but todoist api does not provide it
       },
     };
   }
