@@ -20,12 +20,18 @@ yarn setup
 
 This will bring up all the services app uses, as well as configure them (create some kafka topics)
 
+> There may be some error logs if kafka cannot start before topic creation starts. Those can safely be ignored, as there is built in retry and topics will be created
+
 Finally, app can be started by running
 
 ```shell
 yarn start # For main app
 yarn start worker # For worker
 ```
+
+To start, you can call `startFetching` which will tell worker to start fetching and will fill your database with existing data.
+
+> Please, after testing it out, call stopFetching mutation so that API does not get triggered. It is on free mode, I hope it will not hit limit
 
 ### Tests
 
@@ -34,6 +40,8 @@ I have written some unit and integration tests. Of course, real world app could 
 ```shell
 yarn test
 ```
+
+> Tests will delete all data in database and create its own. There is no separate test infrastructure.
 
 > Possible improvement: I have added --force-exit flag to the command. A way to go would be to remove certain connections on lifecycle hooks. To save some time, I just used --force-exit flag.
 

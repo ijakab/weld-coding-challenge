@@ -92,7 +92,6 @@ export class KafkaService {
       setTimeout(() => {
         // after a certain time we want to automatically timeout, because our consumer may disconnect
         timedOut = true;
-        this.logger.error('Consumer timed out');
         reject(new Error('Consumer timeout'));
       }, environment.KAFKA_CONSUMER_TIMEOUT);
     });
