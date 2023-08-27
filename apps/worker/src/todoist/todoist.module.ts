@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { environment } from '../environment';
 import { TodoistConfig } from './todoist-config';
-import { TodoUpsertController } from './api/todo-upsert.controller';
 import { TodoistClient } from './data/todoist.client';
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -33,7 +32,7 @@ import { TodoistKafkaSerializer } from './domain/todoist.kafka-serializer';
     }),
     ScheduleModule.forRoot(),
   ],
-  controllers: [TodoUpsertController],
+  controllers: [],
   providers: [
     TodoistSchedulerService,
     TodoistDispatcher,

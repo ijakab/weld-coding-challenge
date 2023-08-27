@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { environment } from '../environment';
-import { TodoDispatcher } from './domain/todo.dispatcher';
 import { TodoSyncController } from './api/todo-sync.controller';
 import { TodoConfig } from './todo-config';
 import { TodoControlService } from './domain/todo-control.service';
@@ -38,7 +37,6 @@ import { TodoSerializer } from './domain/serialization/todo.serializer';
   ],
   controllers: [TodoSyncController],
   providers: [
-    TodoDispatcher,
     TodoGraphqlResolver,
     TodoControlService,
     TodoSerializer,
