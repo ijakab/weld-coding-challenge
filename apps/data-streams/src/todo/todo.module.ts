@@ -15,9 +15,12 @@ import {
 import { TodoSyncService } from './domain/todo-sync.service';
 import { TodoQueryService } from './domain/todo-query.service';
 import { TodoSerializer } from './domain/serialization/todo.serializer';
+import { CommonModule } from '../common/common.module';
+import { TodoSyncFailController } from './api/todo-sync-fail.controller';
 
 @Module({
   imports: [
+    CommonModule,
     MongooseModule.forFeature([
       { name: Todo.name, schema: TodoSchema },
       { name: TodoIntegration.name, schema: TodoIntegrationSchema },
@@ -35,7 +38,7 @@ import { TodoSerializer } from './domain/serialization/todo.serializer';
       },
     ]),
   ],
-  controllers: [TodoSyncController],
+  controllers: [TodoSyncController, TodoSyncFailController],
   providers: [
     TodoGraphqlResolver,
     TodoControlService,

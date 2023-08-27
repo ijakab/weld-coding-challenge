@@ -3,6 +3,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { environment } from '../environment';
+import { KafkaService } from './api/kafka.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TodoConfig } from '../todo/todo-config';
 
 @Module({
   imports: [
@@ -11,8 +14,21 @@ import { environment } from '../environment';
       driver: ApolloDriver,
       autoSchemaFile: './src/common/api/schema.gql',
     }),
+    ClientsModule.register([
+      {
+        name: TodoConfig.KafkaDIName,
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: environment.KAFKA_CLIENT_ID,
+            brokers: environment.KAFKA_BROKERS.split(','),
+          },
+        },
+      },
+    ]),
   ],
   controllers: [],
-  providers: [],
+  providers: [KafkaService],
+  exports: [KafkaService],
 })
 export class CommonModule {}
