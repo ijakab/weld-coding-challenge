@@ -1,4 +1,4 @@
-import { cleanEnv, str } from 'envalid';
+import { cleanEnv, num, str } from 'envalid';
 
 export const environment = cleanEnv(process.env, {
   KAFKA_BROKERS: str({ default: 'localhost:9094' }),
@@ -6,6 +6,7 @@ export const environment = cleanEnv(process.env, {
   KAFKA_CONSUMER_GROUP_ID: str({ default: 'weld-ds-consumer-local' }),
   KAFKA_TODO_SYNC_TOPIC: str({ default: 'todo.sync' }),
   KAFKA_TODO_CONTROL_TOPIC: str({ default: 'todo.control' }),
+  KAFKA_RETRY_COUNT: num({ default: 3 }),
   MONGO_CONNECTION_URL: str({
     // connecting to admin db is not a great idea usually, but it will be automatically created and authorized
     // and this way we can skip some steps in local setup

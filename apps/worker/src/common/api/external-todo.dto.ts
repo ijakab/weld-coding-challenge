@@ -6,4 +6,8 @@ export type ExternalTodoDto = {
   isCompleted: boolean;
   integration: IntegrationEnum;
   externalId: string;
+  meta: {
+    retry: number;
+    error?: string;
+  };
 };

@@ -17,6 +17,9 @@ export class TodoistKafkaSerializer {
       isCompleted: Boolean(todoistItem.completed_at),
       integration: IntegrationEnum.Todoist,
       externalId: todoistItem.id,
+      meta: {
+        retry: 0,
+      },
     };
   }
 }

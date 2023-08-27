@@ -29,20 +29,34 @@ export class TodoSyncController implements OnApplicationBootstrap {
       .createClient()
       .consumer({ groupId: environment.KAFKA_CONSUMER_GROUP_ID });
     await consumer.subscribe({
+      autoCommit: false,
       topics: [environment.KAFKA_TODO_SYNC_TOPIC],
       // we want to ensure messages are read eventually even if service is down temporary
       fromBeginning: true,
     });
     await consumer.run({
-      eachMessage: async ({ message }) => {
+      eachMessage: async ({ message, topic, partition }) => {
+        const commitOffset = () => {
+          return consumer.commitOffsets([
+            {
+              topic,
+              partition,
+              offset: (Number(message.offset) + 1).toString(),
+            },
+          ]);
+        };
         // this JSON parsing is pretty much what I assume nest's @Payload would do so wanted to emulate its
-        await this.syncTodo(JSON.parse(message.value.toString()));
+        await this.syncTodo(JSON.parse(message.value.toString()), commitOffset);
       },
     });
   }
 
-  public async syncTodo(externalTodo: ExternalTodoDto): Promise<void> {
+  public async syncTodo(
+    externalTodo: ExternalTodoDto,
+    commitOffset: () => Promise<void>,
+  ): Promise<void> {
     this.logger.log('Called todo sync request');
     await this.todoSyncService.syncExternalTodo(externalTodo);
+    await commitOffset();
   }
 }
