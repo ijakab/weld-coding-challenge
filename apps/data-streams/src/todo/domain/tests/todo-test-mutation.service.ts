@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Todo } from '../../data/todo.schema';
+import { Todo, TodoDocument } from '../../data/todo.schema';
 import { Model } from 'mongoose';
 import { TodoIntegration } from '../../data/todo-integration.schema';
+import { IntegrationEnum } from '../../api/dto/integration.enum';
 
 // primarily helps in writing tests
 @Injectable()
@@ -27,5 +28,20 @@ export class TodoTestMutationService {
         isCompleted: false,
       });
     }
+  }
+
+  public async seedForSync(externalId: string): Promise<TodoDocument> {
+    const todoWithIntegration = await this.todoModel.create({
+      content: 'Todo with integration',
+      syncAt: Date.now(),
+      description: null,
+      isCompleted: true,
+    });
+    await this.todoIntegrationModel.create({
+      integration: IntegrationEnum.Todoist,
+      externalId,
+      todo: todoWithIntegration.id,
+    });
+    return todoWithIntegration;
   }
 }
