@@ -17,6 +17,7 @@ import { TodoQueryService } from './domain/todo-query.service';
 import { TodoSerializer } from './domain/serialization/todo.serializer';
 import { CommonModule } from '../common/common.module';
 import { TodoSyncFailController } from './api/todo-sync-fail.controller';
+import { TodoTestMutationService } from './domain/tests/todo-test-mutation.service';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TodoSyncFailController } from './api/todo-sync-fail.controller';
     TodoKafkaSerializer,
     TodoSyncService,
     TodoQueryService,
+    TodoTestMutationService,
   ],
 })
 export class TodoModule {}
