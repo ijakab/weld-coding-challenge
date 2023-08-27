@@ -7,7 +7,6 @@ export type ExternalTodoDto = {
   integration: IntegrationEnum;
   externalId: string;
   meta: {
-    retry: number;
     error?: string;
     syncAt: number;
   };

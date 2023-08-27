@@ -1,10 +1,12 @@
-import { cleanEnv, num, str } from 'envalid';
+import { bool, cleanEnv, num, str } from 'envalid';
 
 export const environment = cleanEnv(process.env, {
   KAFKA_BROKERS: str({ default: 'localhost:9094' }),
   KAFKA_CLIENT_ID: str({ default: 'weld-ds-client-local' }),
   KAFKA_CONSUMER_SYNC_GROUP_ID: str({ default: 'weld-ds-sync-consumer-local' }),
   KAFKA_CONSUMER_FAIL_GROUP_ID: str({ default: 'weld-ds-fail-consumer-local' }),
+  KAFKA_RUN_FAIL_CONSUMER: bool({ default: true }),
+  KAFKA_CONSUMER_TIMEOUT: num({ default: 1000 }),
   KAFKA_TODO_SYNC_TOPIC: str({ default: 'todo.sync' }),
   KAFKA_TODO_SYNC_FAIL_TOPIC: str({ default: 'todo.sync.fail' }),
   KAFKA_TODO_SYNC_CORRUPT_TOPIC: str({ default: 'todo.sync.corrupt' }),
