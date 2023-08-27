@@ -96,5 +96,8 @@ export class KafkaService {
         reject(new Error('Consumer timeout'));
       }, environment.KAFKA_CONSUMER_TIMEOUT);
     });
+
+    // In the real world, if we expect long consumption time, we can use heartbeats to solve this problem
+    // However, for us, if it takes too long to process the message it is likely a connection issue or error
   }
 }
