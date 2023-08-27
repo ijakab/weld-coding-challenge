@@ -8,6 +8,8 @@ import { PaginationInput } from '../../common/api/pagination.input';
 import { AppConfig } from '../../common/app-config';
 import { PaginatedTodoType } from '../api/dto/paginated-todo.type';
 import { TodoFilterInput } from '../api/dto/todo-filter.input';
+import { NotFoundError } from '../../common/domain/not-found.error';
+import { BadRequestError } from '../../common/domain/bad-request.error';
 
 @Injectable()
 export class TodoQueryService {
@@ -32,6 +34,7 @@ export class TodoQueryService {
 
   public async getSingle(id: string): Promise<TodoType> {
     const todo = await this.todoModel.findById(id);
+    if (!todo) throw new NotFoundError('Todo not found', { id });
     return this.todoSerializer.single(todo);
   }
 
@@ -65,7 +68,9 @@ export class TodoQueryService {
     query.limit(take);
     query.sort('-_id');
     if (paginationInput.afterPointer && paginationInput.beforePointer) {
-      // todo throw error later
+      throw new BadRequestError(
+        'Cannot send both beforePointer and afterPointer',
+      );
     }
     if (paginationInput.afterPointer) {
       query.where({ _id: { $lt: paginationInput.afterPointer } });
