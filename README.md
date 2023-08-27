@@ -177,3 +177,4 @@ Shortcuts have been used from time to time, and code is left with many comments,
 3. Protobuf - If we have large messages, encoding them in protobuf or afro can greatly reduce kafka disk usage
 4. Better todo queries - Obviously querying todos is limited in filtering options, pagination and sorting. We'd need to figure out requirements and, design proper indexing and expose more flexible API
 5. Two-way sync - it is possible that app grows so that data can be edited through this system. In that case we would need to make sync in different direction - from our system to the third party API
+6. Multiple users - Currently, app works with the bearer token for a single user provided over environment variable. In the real world, we'd want to enable oauth login to the API, hold tokens for multiple users, and give each user access to their own instances.
